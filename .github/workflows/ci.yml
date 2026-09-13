@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: ["19.0"]
+  pull_request:
+    branches: ["19.0"]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build image
+        run: docker compose build
+      - name: Start database
+        run: docker compose up -d db
+      - name: Install module and run tests
+        run: |
+          docker compose run --rm odoo odoo -c /etc/odoo/odoo.conf \
+            -d ci_test -i roekish_delivery_dpd --without-demo=False \
+            --test-enable --test-tags=/roekish_delivery_dpd --stop-after-init
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install black flake8
+      - name: black
+        run: black --check --line-length 88 roekish_delivery_dpd
+      - name: flake8
+        run: flake8 roekish_delivery_dpd

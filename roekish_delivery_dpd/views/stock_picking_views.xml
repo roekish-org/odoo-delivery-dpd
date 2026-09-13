@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ROEKISH
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <record id="view_picking_form_dpd" model="ir.ui.view">
+        <field name="name">stock.picking.form.dpd</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='carrier_id']" position="after">
+                <field name="dpd_is_pickup" invisible="1" />
+                <div class="o_row" colspan="2" invisible="not dpd_is_pickup">
+                    <button
+                        name="action_dpd_choose_pickup_point"
+                        type="object"
+                        string="Choose Pickup relay"
+                        icon="fa-map-marker"
+                        class="btn-link"
+                    />
+                    <field name="dpd_pickup_point_name" readonly="1" />
+                    <field name="dpd_pickup_point_code" readonly="1" nolabel="1" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

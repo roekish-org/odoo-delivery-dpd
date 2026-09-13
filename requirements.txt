@@ -1,0 +1,5 @@
+# Optional runtime dependency, imported lazily and fail-closed if missing.
+# roulier: DPD France label generation (e-Station web service).
+# The Pickup relay search needs nothing extra: it uses `requests` and `lxml`,
+# shipped with Odoo.
+roulier

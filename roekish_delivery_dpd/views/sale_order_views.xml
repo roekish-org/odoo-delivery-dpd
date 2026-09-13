@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ROEKISH
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <record id="view_order_form_dpd" model="ir.ui.view">
+        <field name="name">sale.order.form.dpd</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="delivery.view_order_form_with_carrier" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='shipping_weight']" position="after">
+                <field name="dpd_is_pickup" invisible="1" />
+                <div class="o_row" invisible="not dpd_is_pickup">
+                    <button
+                        name="action_dpd_choose_pickup_point"
+                        type="object"
+                        string="Choose Pickup relay"
+                        icon="fa-map-marker"
+                        class="btn-link"
+                    />
+                    <field name="dpd_pickup_point_name" readonly="1" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ROEKISH
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <data noupdate="1">
+        <record id="module_category_delivery_dpd" model="ir.module.category">
+            <field name="name">DPD Delivery</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="privilege_delivery_dpd" model="res.groups.privilege">
+            <field name="name">DPD Delivery</field>
+            <field name="category_id" ref="module_category_delivery_dpd" />
+        </record>
+
+        <record id="group_dpd_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="privilege_id" ref="privilege_delivery_dpd" />
+            <field
+                name="implied_ids"
+                eval="[(4, ref('stock.group_stock_user'))]"
+            />
+            <field
+                name="comment"
+            >Generate DPD labels, track parcels and pick Pickup relays.</field>
+        </record>
+
+        <record id="group_dpd_manager" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="privilege_id" ref="privilege_delivery_dpd" />
+            <field
+                name="implied_ids"
+                eval="[(4, ref('group_dpd_user')), (4, ref('stock.group_stock_manager'))]"
+            />
+            <field
+                name="comment"
+            >Configure DPD carriers, credentials and tariff grids.</field>
+        </record>
+
+        <!-- Multi-company isolation on tariff lines (via their carrier). -->
+        <record id="dpd_tariff_company_rule" model="ir.rule">
+            <field name="name">DPD tariff: multi-company</field>
+            <field name="model_id" ref="model_delivery_dpd_tariff" />
+            <field name="global" eval="True" />
+            <field
+                name="domain_force"
+            >['|', ('carrier_id.company_id', '=', False), ('carrier_id.company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+    <!-- The administrator is seeded into the DPD Administrator group by the
+         module's post_init_hook (res.users groups are role-managed in
+         Odoo 19 and not reliably set from a data record). -->
+</odoo>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ROEKISH
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
+     Indicative DPD France public rates (as published by parcel comparison
+     sites in 2026, taxes included), loaded as editable demo data. DPD France
+     rates are negotiated per contract: users copy these carriers and update
+     the grids with their own contract rates. -->
+<odoo>
+
+    <!-- ===================== Products ===================== -->
+    <record id="product_delivery_dpd_predict" model="product.product">
+        <field name="name">DPD Predict</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries" />
+        <field name="sale_ok" eval="False" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0.0</field>
+        <field name="invoice_policy">order</field>
+    </record>
+    <record id="product_delivery_dpd_relais" model="product.product">
+        <field name="name">DPD Relais</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries" />
+        <field name="sale_ok" eval="False" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0.0</field>
+        <field name="invoice_policy">order</field>
+    </record>
+    <record id="product_delivery_dpd_classic_eu" model="product.product">
+        <field name="name">DPD CLASSIC Europe</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries" />
+        <field name="sale_ok" eval="False" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0.0</field>
+        <field name="invoice_policy">order</field>
+    </record>
+
+    <!-- ===================== Carriers ===================== -->
+    <record id="delivery_carrier_dpd_predict" model="delivery.carrier">
+        <field name="name">DPD - Predict</field>
+        <field name="delivery_type">dpd</field>
+        <field name="product_id" ref="product_delivery_dpd_predict" />
+        <field name="integration_level">rate_and_ship</field>
+        <field name="dpd_product">DPD_Predict</field>
+        <field name="dpd_label_format">PDF</field>
+        <field name="dpd_pricing_method">grid</field>
+    </record>
+    <record id="delivery_carrier_dpd_relais" model="delivery.carrier">
+        <field name="name">DPD - Relais</field>
+        <field name="delivery_type">dpd</field>
+        <field name="product_id" ref="product_delivery_dpd_relais" />
+        <field name="integration_level">rate_and_ship</field>
+        <field name="dpd_product">DPD_Relais</field>
+        <field name="dpd_label_format">PDF</field>
+        <field name="dpd_pricing_method">grid</field>
+    </record>
+    <record id="delivery_carrier_dpd_classic_eu" model="delivery.carrier">
+        <field name="name">DPD - CLASSIC Europe</field>
+        <field name="delivery_type">dpd</field>
+        <field name="product_id" ref="product_delivery_dpd_classic_eu" />
+        <field name="integration_level">rate_and_ship</field>
+        <field name="dpd_product">DPD_Classic</field>
+        <field name="dpd_label_format">PDF</field>
+        <field name="dpd_pricing_method">grid</field>
+    </record>
+
+    <!-- Tariffs: predict -->
+    <record id="tariff_predict_fr_500g" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">0.5</field>
+        <field name="price">9.90</field>
+    </record>
+    <record id="tariff_predict_fr_2kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">2</field>
+        <field name="price">12.50</field>
+    </record>
+    <record id="tariff_predict_fr_5kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">5</field>
+        <field name="price">15.40</field>
+    </record>
+    <record id="tariff_predict_fr_10kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">10</field>
+        <field name="price">20.80</field>
+    </record>
+    <record id="tariff_predict_fr_20kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">20</field>
+        <field name="price">28.50</field>
+    </record>
+    <record id="tariff_predict_fr_30kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_predict" />
+        <field name="zone">FR</field>
+        <field name="max_weight">30</field>
+        <field name="price">36.00</field>
+    </record>
+
+    <!-- Tariffs: relais -->
+    <record id="tariff_relais_fr_500g" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">0.5</field>
+        <field name="price">6.20</field>
+    </record>
+    <record id="tariff_relais_fr_2kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">2</field>
+        <field name="price">8.50</field>
+    </record>
+    <record id="tariff_relais_fr_5kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">5</field>
+        <field name="price">11.20</field>
+    </record>
+    <record id="tariff_relais_fr_10kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">10</field>
+        <field name="price">15.90</field>
+    </record>
+    <record id="tariff_relais_fr_20kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">20</field>
+        <field name="price">22.50</field>
+    </record>
+    <record id="tariff_relais_fr_30kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_relais" />
+        <field name="zone">FR</field>
+        <field name="max_weight">30</field>
+        <field name="price">29.90</field>
+    </record>
+
+    <!-- Tariffs: classic_eu -->
+    <record id="tariff_classic_eu_eu1_2kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU1</field>
+        <field name="max_weight">2</field>
+        <field name="price">16.50</field>
+    </record>
+    <record id="tariff_classic_eu_eu1_5kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU1</field>
+        <field name="max_weight">5</field>
+        <field name="price">19.90</field>
+    </record>
+    <record id="tariff_classic_eu_eu1_10kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU1</field>
+        <field name="max_weight">10</field>
+        <field name="price">25.50</field>
+    </record>
+    <record id="tariff_classic_eu_eu1_20kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU1</field>
+        <field name="max_weight">20</field>
+        <field name="price">36.00</field>
+    </record>
+    <record id="tariff_classic_eu_eu1_30kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU1</field>
+        <field name="max_weight">30</field>
+        <field name="price">47.50</field>
+    </record>
+    <record id="tariff_classic_eu_eu2_2kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU2</field>
+        <field name="max_weight">2</field>
+        <field name="price">19.80</field>
+    </record>
+    <record id="tariff_classic_eu_eu2_5kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU2</field>
+        <field name="max_weight">5</field>
+        <field name="price">24.50</field>
+    </record>
+    <record id="tariff_classic_eu_eu2_10kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU2</field>
+        <field name="max_weight">10</field>
+        <field name="price">31.00</field>
+    </record>
+    <record id="tariff_classic_eu_eu2_20kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU2</field>
+        <field name="max_weight">20</field>
+        <field name="price">44.00</field>
+    </record>
+    <record id="tariff_classic_eu_eu2_30kg" model="delivery.dpd.tariff">
+        <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
+        <field name="zone">EU2</field>
+        <field name="max_weight">30</field>
+        <field name="price">58.00</field>
+    </record>
+</odoo>

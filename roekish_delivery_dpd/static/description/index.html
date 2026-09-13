@@ -1,0 +1,60 @@
+<section style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#22344F;max-width:960px;margin:0 auto;">
+
+  <p style="text-align:center;margin:0 0 24px;">
+    <img src="banner.png" alt="roekish_delivery_dpd" style="max-width:100%;height:auto;border-radius:8px;"/>
+  </p>
+
+  <h1 style="text-align:center;font-size:34px;margin:8px 0;">DPD France for Odoo 19: Predict, Relais, CLASSIC</h1>
+  <p style="text-align:center;font-size:18px;color:#5c6b82;margin:0 0 32px;">
+    Rate shipments, generate labels, track parcels and offer Pickup relay
+    delivery, straight from Odoo.
+  </p>
+
+  <h2 style="border-bottom:3px solid #DC0032;padding-bottom:6px;">Features</h2>
+  <ul style="font-size:16px;line-height:1.7;">
+    <li><b>Rating</b>: delivery price computed from a DPD tariff grid (weight by zone) or from Odoo's native pricing rules.</li>
+    <li><b>Labels</b>: DPD label generation on the e-Station web service (production or test environment), with the parcel number stored on the delivery order. PDF, PDF A6, ZPL or PNG.</li>
+    <li><b>Tracking</b>: a DPD tracking link is exposed to the customer.</li>
+    <li><b>Pickup relays</b>: search nearby relays and select one on the sale order or the delivery order, propagated on confirmation and sent on the label.</li>
+    <li><b>Products</b>: DPD CLASSIC, DPD Predict (SMS time slot) and DPD Relais, with SMS or email notification of the recipient.</li>
+  </ul>
+
+  <h2 style="border-bottom:3px solid #DC0032;padding-bottom:6px;">Carriers and zones</h2>
+  <p style="font-size:16px;line-height:1.7;">
+    Three ready-to-use carriers ship with indicative 2026 rates, which you
+    replace with your own contract rates: DPD Predict, DPD Relais and DPD
+    CLASSIC Europe. Zones cover metropolitan France, Europe zone 1 (Germany,
+    Belgium, Luxembourg, Netherlands), Europe zone 2 (rest of Europe, United
+    Kingdom, Switzerland) and Intercontinental.
+  </p>
+
+  <h2 style="border-bottom:3px solid #DC0032;padding-bottom:6px;">Security</h2>
+  <ul style="font-size:16px;line-height:1.7;">
+    <li>e-Station credentials and the Pickup key are restricted to the DPD Administrator group, and secrets are masked in error messages.</li>
+    <li>Fine-grained access rights with dedicated User and Administrator groups.</li>
+    <li>Multi-company isolation on the tariff grids.</li>
+  </ul>
+
+  <h2 style="border-bottom:3px solid #DC0032;padding-bottom:6px;">Requirements</h2>
+  <p style="font-size:16px;line-height:1.7;">
+    The module builds on Odoo's native delivery framework. Rating and relay
+    search work with no external library. Label generation uses
+    <code>roulier</code>, optional and imported on demand.
+  </p>
+  <p style="font-size:15px;line-height:1.7;background:#FDECEF;border-left:4px solid #DC0032;padding:12px 16px;border-radius:6px;">
+    Deploy the module on the <code>addons_path</code> (Odoo.sh or On-Premise).
+    The Apps &gt; Import Module zip upload is data-only and cannot install a
+    module that ships Python models. On Odoo Online (SaaS) Python libraries
+    cannot be installed either, so label generation needs Odoo.sh or
+    On-Premise, where <code>roulier</code> is available.
+  </p>
+
+  <div style="text-align:center;margin:32px 0 8px;">
+    <a href="https://github.com/roekish-org/odoo-delivery-dpd" style="display:inline-block;background:#DC0032;color:#fff;text-decoration:none;padding:12px 28px;border-radius:28px;font-weight:600;">Source code and documentation</a>
+  </div>
+
+  <p style="text-align:center;color:#8a94a6;font-size:14px;margin-top:24px;">
+    AGPL-3.0 licence. Published by ROEKISH.
+  </p>
+
+</section>

@@ -1,0 +1,690 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* roekish_delivery_dpd
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0-20260723\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-13 14:11+0000\n"
+"PO-Revision-Date: 2026-09-13 14:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: roekish_delivery_dpd
+#: model:res.groups,name:roekish_delivery_dpd.group_dpd_manager
+msgid "Administrator"
+msgstr "Administrateur"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_agency_id
+msgid "Agency code"
+msgstr "Code agence"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_notifications__automaticsms
+msgid "Automatic SMS"
+msgstr "SMS automatique"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_notifications__automaticmail
+msgid "Automatic email"
+msgstr "Email automatique"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__carrier_id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__carrier_id
+msgid "Carrier"
+msgstr "Transporteur"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_pudo_carrier
+msgid "Carrier code sent to the Pickup relay search (EXA for DPD France)."
+msgstr "Code transporteur envoyé à la recherche de relais Pickup (EXA pour DPD France)."
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_order_form_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_picking_form_dpd
+msgid "Choose Pickup relay"
+msgstr "Choisir un relais Pickup"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/pickup_mixin.py:0
+msgid "Choose a Pickup relay"
+msgstr "Choisir un relais Pickup"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Choose a Pickup relay on %s before generating a DPD Relais label."
+msgstr "Choisissez un relais Pickup sur %s avant de générer une étiquette DPD Relais."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__city
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__city
+msgid "City"
+msgstr "Ville"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_dpd_pickup_wizard_form
+msgid "Close"
+msgstr "Fermer"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_agency_id
+msgid "Code of the DPD France agency collecting your parcels (3 digits)."
+msgstr "Code de l'agence DPD France qui collecte vos colis (3 chiffres)."
+
+#. module: roekish_delivery_dpd
+#: model:res.groups,comment:roekish_delivery_dpd.group_dpd_manager
+msgid "Configure DPD carriers, credentials and tariff grids."
+msgstr "Configurer les transporteurs DPD, les identifiants et les grilles tarifaires."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Connection successful, %s Pickup relays returned."
+msgstr "Connexion réussie, %s relais Pickup renvoyés."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__country_id
+msgid "Country"
+msgstr "Pays"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__create_uid
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__create_uid
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__create_date
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__create_date
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_customer_id
+msgid "Customer number"
+msgstr "Numéro client"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "DPD"
+msgstr "DPD"
+
+#. module: roekish_delivery_dpd
+#: model:delivery.carrier,name:roekish_delivery_dpd.delivery_carrier_dpd_classic_eu
+msgid "DPD - CLASSIC Europe"
+msgstr "DPD - CLASSIC Europe"
+
+#. module: roekish_delivery_dpd
+#: model:delivery.carrier,name:roekish_delivery_dpd.delivery_carrier_dpd_predict
+msgid "DPD - Predict"
+msgstr "DPD - Predict"
+
+#. module: roekish_delivery_dpd
+#: model:delivery.carrier,name:roekish_delivery_dpd.delivery_carrier_dpd_relais
+msgid "DPD - Relais"
+msgstr "DPD - Relais"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_product__dpd_classic
+msgid "DPD CLASSIC (business delivery)"
+msgstr "DPD CLASSIC (livraison entreprise)"
+
+#. module: roekish_delivery_dpd
+#: model:product.template,name:roekish_delivery_dpd.product_delivery_dpd_classic_eu_product_template
+msgid "DPD CLASSIC Europe"
+msgstr "DPD CLASSIC Europe"
+
+#. module: roekish_delivery_dpd
+#: model:ir.module.category,name:roekish_delivery_dpd.module_category_delivery_dpd
+#: model:res.groups.privilege,name:roekish_delivery_dpd.privilege_delivery_dpd
+msgid "DPD Delivery"
+msgstr "Livraison DPD"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__delivery_type__dpd
+msgid "DPD France"
+msgstr "DPD France"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_customer_id
+msgid "DPD France customer number (6 digits) printed on your contract."
+msgstr "Numéro client DPD France (6 chiffres) figurant sur votre contrat."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_product
+msgid "DPD France product sent to the label web service."
+msgstr "Produit DPD France envoyé au web service d'étiquetage."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_delivery_dpd_pickup_line
+msgid "DPD Pickup relay candidate"
+msgstr "Relais Pickup DPD proposé"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_delivery_dpd_pickup_mixin
+msgid "DPD Pickup relay holder"
+msgstr "Porteur de relais Pickup DPD"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_delivery_dpd_pickup_wizard
+msgid "DPD Pickup relay search"
+msgstr "Recherche de relais Pickup DPD"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"DPD Pickup search failed:\n"
+"%s"
+msgstr "La recherche de relais Pickup DPD a échoué :\n%s"
+
+#. module: roekish_delivery_dpd
+#: model:product.template,name:roekish_delivery_dpd.product_delivery_dpd_predict_product_template
+msgid "DPD Predict"
+msgstr "DPD Predict"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_product__dpd_predict
+msgid "DPD Predict (home delivery, SMS time slot)"
+msgstr "DPD Predict (livraison à domicile, créneau par SMS)"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"DPD Predict requires a French mobile number on the recipient %s (06..., "
+"07..., +336... or +337...)."
+msgstr "DPD Predict exige un numéro de portable français sur le destinataire %s (06..., 07..., +336... ou +337...)."
+
+#. module: roekish_delivery_dpd
+#: model:product.template,name:roekish_delivery_dpd.product_delivery_dpd_relais_product_template
+msgid "DPD Relais"
+msgstr "DPD Relais"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_product__dpd_relais
+msgid "DPD Relais (Pickup relay delivery)"
+msgstr "DPD Relais (livraison en relais Pickup)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_is_pickup
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_is_pickup
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_is_pickup
+msgid "DPD Relais delivery"
+msgstr "Livraison DPD Relais"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_delivery_dpd_tariff
+msgid "DPD Tariff Grid Line"
+msgstr "Ligne de grille tarifaire DPD"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "DPD label %s"
+msgstr "Étiquette DPD %s"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_product
+msgid "DPD product"
+msgstr "Produit DPD"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "DPD refused the Pickup search (code %(code)s): %(msg)s"
+msgstr "DPD a refusé la recherche Pickup (code %(code)s) : %(msg)s"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"DPD rejected the shipment for %(picking)s:\n"
+"%(error)s"
+msgstr "DPD a rejeté l'expédition de %(picking)s :\n%(error)s"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "DPD requires a phone number on the sender: set it on company %s."
+msgstr "DPD exige un numéro de téléphone pour l'expéditeur : renseignez-le sur la société %s."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_tariff_ids
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_pricing_method__grid
+msgid "DPD tariff grid"
+msgstr "Grille tarifaire DPD"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"DPD tracking reference cleared in Odoo. If the parcel was already handed "
+"over, contact your DPD agency."
+msgstr "Référence de suivi DPD effacée dans Odoo. Si le colis a déjà été remis, contactez votre agence DPD."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_dpd_tariff__price
+msgid ""
+"Delivery price charged to the customer, expressed in the carrier company "
+"currency."
+msgstr "Prix de livraison facturé au client, dans la devise de la société du transporteur."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__display_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__distance
+msgid "Distance (m)"
+msgstr "Distance (m)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_dpd_tariff__zone__eu1
+msgid "Europe zone 1 (Germany, Belgium, Luxembourg, Netherlands)"
+msgstr "Europe zone 1 (Allemagne, Belgique, Luxembourg, Pays-Bas)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_dpd_tariff__zone__eu2
+msgid "Europe zone 2 (rest of Europe, United Kingdom, Switzerland)"
+msgstr "Europe zone 2 (reste de l'Europe, Royaume-Uni, Suisse)"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"Fill the DPD customer number and agency code on carrier '%s' before "
+"generating labels."
+msgstr "Renseignez le numéro client et le code agence DPD sur le transporteur « %s » avant de générer des étiquettes."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Fill the Pickup search key before testing the connection."
+msgstr "Renseignez la clé de recherche Pickup avant de tester la connexion."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Fill the e-Station login and password before testing the connection."
+msgstr "Renseignez le login et le mot de passe e-Station avant de tester la connexion."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_dpd_tariff__zone__fr
+msgid "France (metropolitan, Monaco)"
+msgstr "France (métropole, Monaco)"
+
+#. module: roekish_delivery_dpd
+#: model:res.groups,comment:roekish_delivery_dpd.group_dpd_user
+msgid "Generate DPD labels, track parcels and pick Pickup relays."
+msgstr "Générer des étiquettes DPD, suivre les colis et choisir des relais Pickup."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_pricing_method
+msgid ""
+"How the delivery price is computed:\n"
+"- DPD tariff grid: weight x destination zone lines defined on this carrier.\n"
+"- Odoo pricing rules: the standard rule-based pricing engine."
+msgstr "Comment le prix de livraison est calculé :\n- Grille tarifaire DPD : lignes poids x zone de destination définies sur ce transporteur.\n- Règles de prix Odoo : le moteur de règles standard."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__id
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__id
+msgid "ID"
+msgstr "ID"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_dpd_tariff__zone__int
+msgid "Intercontinental (rest of the world)"
+msgstr "Intercontinental (reste du monde)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_pudo_key
+msgid ""
+"Key of the DPD France Pickup (MyPudo) relay search web service, provided "
+"with your DPD Relais contract. Readable only by DPD administrators."
+msgstr "Clé du web service de recherche de relais Pickup (MyPudo) de DPD France, fournie avec votre contrat DPD Relais. Lisible uniquement par les administrateurs DPD."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_label_format
+msgid "Label format"
+msgstr "Format d'étiquette"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__write_uid
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__write_uid
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__write_date
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__write_date
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__name
+msgid "Name"
+msgstr "Nom"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"No DPD tariff matches this destination and weight. Add a matching line to "
+"the tariff grid of carrier '%s'."
+msgstr "Aucun tarif DPD ne correspond à cette destination et ce poids. Ajoutez une ligne à la grille tarifaire du transporteur « %s »."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_notifications__no
+msgid "None"
+msgstr "Aucune"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_notifications
+msgid ""
+"Notification requested from DPD for CLASSIC and Relais parcels. Predict "
+"parcels always use the Predict SMS notification."
+msgstr "Notification demandée à DPD pour les colis CLASSIC et Relais. Les colis Predict utilisent toujours le SMS Predict."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_pricing_method__base_on_rule
+msgid "Odoo pricing rules"
+msgstr "Règles de prix Odoo"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_label_format__pdf
+msgid "PDF"
+msgstr "PDF"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_label_format__pdf_a6
+msgid "PDF A6"
+msgstr "PDF A6"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_label_format__png
+msgid "PNG"
+msgstr "PNG"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_password
+msgid ""
+"Password of the DPD France e-Station web service account. Readable only by "
+"DPD administrators."
+msgstr "Mot de passe du compte web service e-Station de DPD France. Lisible uniquement par les administrateurs DPD."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__picking_id
+msgid "Picking"
+msgstr "Transfert"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_pudo_carrier
+msgid "Pickup carrier code"
+msgstr "Code transporteur Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_pickup_point_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_pickup_point_name
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_pickup_point_name
+msgid "Pickup relay"
+msgstr "Relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_pickup_point_code
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_pickup_point_code
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_pickup_point_code
+msgid "Pickup relay ID"
+msgstr "ID du relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_pickup_point_zip
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_pickup_point_zip
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_pickup_point_zip
+msgid "Pickup relay ZIP"
+msgstr "CP du relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_pickup_point_city
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_pickup_point_city
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_pickup_point_city
+msgid "Pickup relay city"
+msgstr "Ville du relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "Pickup relay search"
+msgstr "Recherche de relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_pickup_point_street
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_sale_order__dpd_pickup_point_street
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_stock_picking__dpd_pickup_point_street
+msgid "Pickup relay street"
+msgstr "Rue du relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__line_ids
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_dpd_pickup_wizard_form
+msgid "Pickup relays"
+msgstr "Relais Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_pudo_key
+msgid "Pickup search key"
+msgstr "Clé de recherche Pickup"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__price
+msgid "Price"
+msgstr "Prix"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "Pricing"
+msgstr "Tarification"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_pricing_method
+msgid "Pricing method"
+msgstr "Méthode de tarification"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Fournisseur"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_notifications
+msgid "Recipient notification"
+msgstr "Notification du destinataire"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__code
+msgid "Relay ID"
+msgstr "ID du relais"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__sale_id
+msgid "Sale"
+msgstr "Vente"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_sale_order
+msgid "Sales Order"
+msgstr "Commande client"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_dpd_pickup_wizard_form
+msgid "Search"
+msgstr "Rechercher"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_dpd_pickup_wizard_form
+msgid "Select"
+msgstr "Sélectionner"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_test_mode
+msgid ""
+"Send label requests to the e-Station test environment instead of production."
+msgstr "Envoyer les demandes d'étiquette sur l'environnement de test e-Station au lieu de la production."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Set a shipping weight on %s before generating a DPD label."
+msgstr "Renseignez un poids d'expédition sur %s avant de générer une étiquette DPD."
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "Shipment"
+msgstr "Expédition"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_delivery_carrier
+msgid "Shipping Methods"
+msgstr "Méthodes d'expédition"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__street
+msgid "Street"
+msgstr "Rue"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "Test connection"
+msgstr "Tester la connexion"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_test_mode
+msgid "Test environment"
+msgstr "Environnement de test"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"The Python library 'roulier' is required to generate DPD labels. Install it "
+"with: pip install roulier"
+msgstr "La librairie Python « roulier » est requise pour générer les étiquettes DPD. Installez-la avec : pip install roulier"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid ""
+"The delivery address of %(picking)s is incomplete (missing: %(fields)s)."
+msgstr "L'adresse de livraison de %(picking)s est incomplète (manque : %(fields)s)."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_dpd_pickup_mixin__dpd_is_pickup
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_sale_order__dpd_is_pickup
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_stock_picking__dpd_is_pickup
+msgid "The selected carrier delivers to a DPD Pickup relay."
+msgstr "Le transporteur sélectionné livre en relais Pickup DPD."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_dpd_tariff__max_weight
+msgid ""
+"This line applies to shipments whose total weight is at or below this value,"
+" for the selected zone."
+msgstr "Cette ligne s'applique aux envois dont le poids total est inférieur ou égal à cette valeur, pour la zone choisie."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model,name:roekish_delivery_dpd.model_stock_picking
+msgid "Transfer"
+msgstr "Transfert"
+
+#. module: roekish_delivery_dpd
+#: model:res.groups,name:roekish_delivery_dpd.group_dpd_user
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_login
+msgid "User id of the DPD France e-Station web service account."
+msgstr "Identifiant du compte web service e-Station de DPD France."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__weight
+msgid "Weight (kg)"
+msgstr "Poids (kg)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__max_weight
+msgid "Weight up to (kg)"
+msgstr "Poids jusqu'à (kg)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__wizard_id
+msgid "Wizard"
+msgstr "Assistant"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__zip
+msgid "ZIP"
+msgstr "CP"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_wizard__zip
+msgid "ZIP code"
+msgstr "Code postal"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields.selection,name:roekish_delivery_dpd.selection__delivery_carrier__dpd_label_format__zpl
+msgid "ZPL (label printer)"
+msgstr "ZPL (imprimante d'étiquettes)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__zone
+msgid "Zone"
+msgstr "Zone"
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "e-Station credentials"
+msgstr "Identifiants e-Station"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_login
+msgid "e-Station login"
+msgstr "Login e-Station"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_password
+msgid "e-Station password"
+msgstr "Mot de passe e-Station"

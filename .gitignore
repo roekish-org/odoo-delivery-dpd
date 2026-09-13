@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Odoo
+*.pot~
+.ropeproject/
+
+# Docker / local demo data
+# (compose volumes are named volumes, nothing to ignore here)
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+*.local
+
+# Wiki source (pushed to the separate .wiki.git repo, not the code repo)
+wiki/

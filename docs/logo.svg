@@ -1,0 +1,24 @@
+<svg width="760" height="160" viewBox="0 0 760 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="roekish_delivery_dpd, DPD France for Odoo 19">
+  <defs>
+    <linearGradient id="lbg" x1="16" y1="32" x2="112" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8324A"/>
+      <stop offset="1" stop-color="#B3001B"/>
+    </linearGradient>
+  </defs>
+  <!-- icon -->
+  <g transform="translate(16,32)">
+    <rect width="96" height="96" rx="21" fill="url(#lbg)"/>
+    <g transform="scale(0.75)">
+      <path d="M64 28 L100 47 L100 85 L64 104 L28 85 L28 47 Z" fill="#2B2B2B"/>
+      <path d="M64 28 L100 47 L64 66 L28 47 Z" fill="#3D3D3D"/>
+      <path d="M64 66 L100 47 L100 85 L64 104 Z" fill="#1A1A1A"/>
+      <path d="M28 47 L64 66 L100 47" stroke="#E8324A" stroke-width="3" fill="none" stroke-linejoin="round"/>
+      <path d="M64 66 L64 104" stroke="#E8324A" stroke-width="3" fill="none"/>
+      <circle cx="64" cy="48" r="8.5" fill="#FFFFFF"/>
+      <circle cx="64" cy="48" r="3.6" fill="#B3001B"/>
+    </g>
+  </g>
+  <!-- wordmark -->
+  <text x="132" y="82" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="34" font-weight="700" fill="#DC0032">roekish_delivery_dpd</text>
+  <text x="134" y="112" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="19" font-weight="500" fill="#7A8699">Predict &#183; Relais &#183; CLASSIC &#183; Odoo 19</text>
+</svg>

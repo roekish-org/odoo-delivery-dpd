@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_dpd_tariff_user,delivery.dpd.tariff user,model_delivery_dpd_tariff,group_dpd_user,1,0,0,0
+access_delivery_dpd_tariff_manager,delivery.dpd.tariff manager,model_delivery_dpd_tariff,group_dpd_manager,1,1,1,1
+access_delivery_dpd_pickup_wizard,delivery.dpd.pickup.wizard user,model_delivery_dpd_pickup_wizard,group_dpd_user,1,1,1,1
+access_delivery_dpd_pickup_line,delivery.dpd.pickup.line user,model_delivery_dpd_pickup_line,group_dpd_user,1,1,1,1
+access_delivery_dpd_pickup_wizard_sale,delivery.dpd.pickup.wizard sale,model_delivery_dpd_pickup_wizard,sales_team.group_sale_salesman,1,1,1,1
+access_delivery_dpd_pickup_line_sale,delivery.dpd.pickup.line sale,model_delivery_dpd_pickup_line,sales_team.group_sale_salesman,1,1,1,1

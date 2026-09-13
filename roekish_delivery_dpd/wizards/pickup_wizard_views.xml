@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ROEKISH
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <record id="view_dpd_pickup_wizard_form" model="ir.ui.view">
+        <field name="name">delivery.dpd.pickup.wizard.form</field>
+        <field name="model">delivery.dpd.pickup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Pickup relays">
+                <field name="picking_id" invisible="1" />
+                <group>
+                    <group>
+                        <field name="zip" />
+                        <field name="city" />
+                    </group>
+                    <group>
+                        <field name="country_id" />
+                        <field name="weight" />
+                    </group>
+                </group>
+                <button
+                    name="action_search"
+                    type="object"
+                    string="Search"
+                    class="btn-primary"
+                    icon="fa-search"
+                />
+                <field name="line_ids" nolabel="1" readonly="1">
+                    <list create="false" edit="false">
+                        <field name="name" />
+                        <field name="street" />
+                        <field name="zip" />
+                        <field name="city" />
+                        <field name="distance" />
+                        <button
+                            name="action_select"
+                            type="object"
+                            string="Select"
+                            class="btn-link"
+                            icon="fa-check"
+                        />
+                    </list>
+                </field>
+                <footer>
+                    <button string="Close" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
