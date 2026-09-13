@@ -24,6 +24,7 @@
 | | |
 |---|---|
 | **Tarification** | Prix calculé depuis une **grille tarifaire DPD** (poids × zone) ou les **règles de prix natives** d'Odoo. Point d'extension `_dpd_get_live_price` (fail-closed) pour un futur service de cotation. |
+| **Délai de livraison** | Délai annoncé en **jours ouvrés** (min / max) réglé sur le transporteur, surchargeable par zone dans la grille. Renvoyé avec le prix par `rate_shipment` (`delay_min` / `delay_max`) et affiché dans l'assistant d'ajout de livraison, pour choisir un transporteur sur le coût et le délai. |
 | **Étiquettes** | Génération d'étiquette DPD via [`roulier`](https://pypi.org/project/roulier/) sur le web service **e-Station** (production ou environnement de test) ; numéro de suivi enregistré sur le bon de livraison. |
 | **Relais Pickup** | Recherche des relais proches (web service Pickup MyPudo), sélectionnable sur le **devis** et le **bon de livraison**, propagé à la validation. |
 | **Suivi** | Lien de suivi DPD pour le client. |

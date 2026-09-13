@@ -39,6 +39,8 @@
                     </group>
                     <group string="Pricing">
                         <field name="dpd_pricing_method" />
+                        <field name="dpd_delay_min" />
+                        <field name="dpd_delay_max" />
                     </group>
                     <field
                         name="dpd_tariff_ids"
@@ -48,6 +50,8 @@
                             <field name="zone" />
                             <field name="max_weight" />
                             <field name="price" />
+                            <field name="delay_min" />
+                            <field name="delay_max" />
                             <field name="currency_id" column_invisible="1" />
                         </list>
                     </field>

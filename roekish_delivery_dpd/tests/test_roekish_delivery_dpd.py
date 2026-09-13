@@ -214,9 +214,47 @@ class TestDeliveryDpd(TransactionCase):
                 ],
             }
         )
-        res = carrier.dpd_rate_shipment(self._create_order(carrier))
+        order = self._create_order(carrier)
+        res = carrier.dpd_rate_shipment(order)
         self.assertTrue(res["success"])
         self.assertEqual(res["price"], 7.5)
+        # The carrier delivery time is returned with rule-based prices too.
+        carrier.write({"dpd_delay_min": 1, "dpd_delay_max": 2})
+        res = carrier.dpd_rate_shipment(order)
+        self.assertEqual((res["delay_min"], res["delay_max"]), (1, 2))
+
+    # ------------------------------------------------------------------
+    # delivery time
+    # ------------------------------------------------------------------
+    def test_rate_shipment_delivery_time(self):
+        # Unknown by default: zeros and no message, nothing misleading shown.
+        res = self.carrier.dpd_rate_shipment(self._create_order(self.carrier))
+        self.assertEqual((res["delay_min"], res["delay_max"]), (0, 0))
+        self.assertFalse(res["warning_message"])
+        # The carrier time applies everywhere; a grid line overrides it.
+        self.carrier.write({"dpd_delay_min": 1, "dpd_delay_max": 2})
+        self.carrier.dpd_tariff_ids.filtered(lambda t: t.zone == "EU1").write(
+            {"delay_min": 2, "delay_max": 3}
+        )
+        order = self._create_order(self.carrier)
+        res = self.carrier.dpd_rate_shipment(order)
+        self.assertEqual((res["delay_min"], res["delay_max"]), (1, 2))
+        self.assertEqual(res["warning_message"], "Delivery in 1 to 2 working days.")
+        res = self.carrier.dpd_rate_shipment(
+            self._create_order(
+                self.carrier, partner_vals={"country_id": self.env.ref("base.de").id}
+            )
+        )
+        self.assertEqual(res["price"], 16.50)
+        self.assertEqual((res["delay_min"], res["delay_max"]), (2, 3))
+        # Single value and one-day wording.
+        self.carrier.write({"dpd_delay_min": 1, "dpd_delay_max": 1})
+        res = self.carrier.dpd_rate_shipment(order)
+        self.assertEqual(res["warning_message"], "Delivery in 1 working day.")
+        # The generic entry point used to compare carriers keeps the keys.
+        res = self.carrier.rate_shipment(order)
+        self.assertEqual(res["price"], 14.10)
+        self.assertEqual((res["delay_min"], res["delay_max"]), (1, 1))
 
     # ------------------------------------------------------------------
     # pickup relays

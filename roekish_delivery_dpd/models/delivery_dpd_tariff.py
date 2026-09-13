@@ -47,3 +47,13 @@ class DeliveryDpdTariff(models.Model):
         related="carrier_id.company_id.currency_id",
         readonly=True,
     )
+    delay_min = fields.Integer(
+        string="Delivery days min",
+        help="Shortest delivery time announced for this zone, in working days "
+        "after hand-over. Leave 0 to use the carrier delivery time.",
+    )
+    delay_max = fields.Integer(
+        string="Delivery days max",
+        help="Longest delivery time announced for this zone, in working days "
+        "after hand-over. Leave 0 to use the carrier delivery time.",
+    )

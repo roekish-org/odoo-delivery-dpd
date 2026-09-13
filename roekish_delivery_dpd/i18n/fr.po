@@ -688,3 +688,73 @@ msgstr "Login e-Station"
 #: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_password
 msgid "e-Station password"
 msgstr "Mot de passe e-Station"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_delay_max
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__delay_max
+msgid "Delivery days max"
+msgstr "Délai de livraison max (jours)"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_delay_min
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_tariff__delay_min
+msgid "Delivery days min"
+msgstr "Délai de livraison min (jours)"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Delivery in %(min)s to %(max)s working days."
+msgstr "Livraison en %(min)s à %(max)s jours ouvrés."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Delivery in %s working days."
+msgstr "Livraison en %s jours ouvrés."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Delivery in 1 working day."
+msgstr "Livraison en 1 jour ouvré."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_delay_max
+msgid ""
+"Longest delivery time announced by DPD, in working days after hand-over. "
+"Applies to every destination unless a tariff grid line overrides it. Leave 0"
+" when unknown."
+msgstr ""
+"Délai de livraison le plus long annoncé par DPD, en jours ouvrés après "
+"remise. S'applique à toutes les destinations sauf si une ligne de la grille "
+"tarifaire le remplace. Laissez 0 si inconnu."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_dpd_tariff__delay_max
+msgid ""
+"Longest delivery time announced for this zone, in working days after hand-"
+"over. Leave 0 to use the carrier delivery time."
+msgstr ""
+"Délai de livraison le plus long annoncé pour cette zone, en jours ouvrés "
+"après remise. Laissez 0 pour utiliser le délai du transporteur."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_delay_min
+msgid ""
+"Shortest delivery time announced by DPD, in working days after hand-over. "
+"Applies to every destination unless a tariff grid line overrides it. Leave 0"
+" when unknown."
+msgstr ""
+"Délai de livraison le plus court annoncé par DPD, en jours ouvrés après "
+"remise. S'applique à toutes les destinations sauf si une ligne de la grille "
+"tarifaire le remplace. Laissez 0 si inconnu."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_dpd_tariff__delay_min
+msgid ""
+"Shortest delivery time announced for this zone, in working days after hand-"
+"over. Leave 0 to use the carrier delivery time."
+msgstr ""
+"Délai de livraison le plus court annoncé pour cette zone, en jours ouvrés "
+"après remise. Laissez 0 pour utiliser le délai du transporteur."

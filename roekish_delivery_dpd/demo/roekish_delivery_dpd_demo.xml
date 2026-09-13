@@ -46,6 +46,8 @@
         <field name="dpd_product">DPD_Predict</field>
         <field name="dpd_label_format">PDF</field>
         <field name="dpd_pricing_method">grid</field>
+        <field name="dpd_delay_min">1</field>
+        <field name="dpd_delay_max">2</field>
     </record>
     <record id="delivery_carrier_dpd_relais" model="delivery.carrier">
         <field name="name">DPD - Relais</field>
@@ -55,6 +57,8 @@
         <field name="dpd_product">DPD_Relais</field>
         <field name="dpd_label_format">PDF</field>
         <field name="dpd_pricing_method">grid</field>
+        <field name="dpd_delay_min">1</field>
+        <field name="dpd_delay_max">2</field>
     </record>
     <record id="delivery_carrier_dpd_classic_eu" model="delivery.carrier">
         <field name="name">DPD - CLASSIC Europe</field>
@@ -64,6 +68,8 @@
         <field name="dpd_product">DPD_Classic</field>
         <field name="dpd_label_format">PDF</field>
         <field name="dpd_pricing_method">grid</field>
+        <field name="dpd_delay_min">2</field>
+        <field name="dpd_delay_max">3</field>
     </record>
 
     <!-- Tariffs: predict -->
@@ -178,29 +184,39 @@
         <field name="zone">EU2</field>
         <field name="max_weight">2</field>
         <field name="price">19.80</field>
+        <field name="delay_min">3</field>
+        <field name="delay_max">5</field>
     </record>
     <record id="tariff_classic_eu_eu2_5kg" model="delivery.dpd.tariff">
         <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
         <field name="zone">EU2</field>
         <field name="max_weight">5</field>
         <field name="price">24.50</field>
+        <field name="delay_min">3</field>
+        <field name="delay_max">5</field>
     </record>
     <record id="tariff_classic_eu_eu2_10kg" model="delivery.dpd.tariff">
         <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
         <field name="zone">EU2</field>
         <field name="max_weight">10</field>
         <field name="price">31.00</field>
+        <field name="delay_min">3</field>
+        <field name="delay_max">5</field>
     </record>
     <record id="tariff_classic_eu_eu2_20kg" model="delivery.dpd.tariff">
         <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
         <field name="zone">EU2</field>
         <field name="max_weight">20</field>
         <field name="price">44.00</field>
+        <field name="delay_min">3</field>
+        <field name="delay_max">5</field>
     </record>
     <record id="tariff_classic_eu_eu2_30kg" model="delivery.dpd.tariff">
         <field name="carrier_id" ref="delivery_carrier_dpd_classic_eu" />
         <field name="zone">EU2</field>
         <field name="max_weight">30</field>
         <field name="price">58.00</field>
+        <field name="delay_min">3</field>
+        <field name="delay_max">5</field>
     </record>
 </odoo>

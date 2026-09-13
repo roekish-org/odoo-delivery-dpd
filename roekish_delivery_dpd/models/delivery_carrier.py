@@ -159,25 +159,43 @@ class DeliveryCarrier(models.Model):
         "carrier_id",
         string="DPD tariff grid",
     )
+    dpd_delay_min = fields.Integer(
+        string="Delivery days min",
+        help="Shortest delivery time announced by DPD, in working days "
+        "after hand-over. Applies to every destination unless a tariff grid "
+        "line overrides it. Leave 0 when unknown.",
+    )
+    dpd_delay_max = fields.Integer(
+        string="Delivery days max",
+        help="Longest delivery time announced by DPD, in working days "
+        "after hand-over. Applies to every destination unless a tariff grid "
+        "line overrides it. Leave 0 when unknown.",
+    )
 
     # ------------------------------------------------------------------
     # Rating
     # ------------------------------------------------------------------
     def dpd_rate_shipment(self, order):
-        """Return a delivery quote for ``order`` (sale.order)."""
+        """Return a delivery quote for ``order`` (sale.order).
+
+        On success the dict also carries ``delay_min`` and ``delay_max``
+        (working days, 0 when unknown) so carriers can be compared on cost
+        and speed. See ``_dpd_with_delay``.
+        """
         self.ensure_one()
+        zone = self._dpd_get_zone(order.partner_shipping_id.country_id)
+        weight = order._get_estimated_weight()
         # Extension point for a live DPD rating endpoint. DPD France exposes
         # none, so this returns None and we fall back to the configured
         # pricing method. Any override MUST fail closed (return None) when
         # the endpoint is unavailable.
         price = self._dpd_get_live_price(order)
         if price is None and self.dpd_pricing_method == "base_on_rule":
-            return self.base_on_rule_rate_shipment(order)
-        if price is None:
-            price = self._dpd_grid_rate(
-                self._dpd_get_zone(order.partner_shipping_id.country_id),
-                order._get_estimated_weight(),
+            return self._dpd_with_delay(
+                self.base_on_rule_rate_shipment(order), zone, weight
             )
+        if price is None:
+            price = self._dpd_grid_rate(zone, weight)
         if price is None:
             return {
                 "success": False,
@@ -189,12 +207,16 @@ class DeliveryCarrier(models.Model):
                 ),
                 "warning_message": False,
             }
-        return {
-            "success": True,
-            "price": price,
-            "error_message": False,
-            "warning_message": False,
-        }
+        return self._dpd_with_delay(
+            {
+                "success": True,
+                "price": price,
+                "error_message": False,
+                "warning_message": False,
+            },
+            zone,
+            weight,
+        )
 
     def _dpd_get_live_price(self, order):
         """Hook for a future DPD live-pricing web call.
@@ -205,13 +227,12 @@ class DeliveryCarrier(models.Model):
         """
         return None
 
-    def _dpd_grid_rate(self, zone, weight):
-        """Look up the price for ``zone`` and ``weight`` in the tariff grid.
-
-        Returns the price (company currency) or None when no bracket matches.
-        """
+    def _dpd_grid_line(self, zone, weight):
+        """Return the first tariff grid line covering ``zone`` and ``weight``."""
         self.ensure_one()
-        line = self.env["delivery.dpd.tariff"].search(
+        if not zone:
+            return self.env["delivery.dpd.tariff"]
+        return self.env["delivery.dpd.tariff"].search(
             [
                 ("carrier_id", "=", self.id),
                 ("zone", "=", zone),
@@ -220,7 +241,61 @@ class DeliveryCarrier(models.Model):
             order="max_weight asc",
             limit=1,
         )
+
+    def _dpd_grid_rate(self, zone, weight):
+        """Look up the price for ``zone`` and ``weight`` in the tariff grid.
+
+        Returns the price (company currency) or None when no bracket matches.
+        """
+        line = self._dpd_grid_line(zone, weight)
         return line.price if line else None
+
+    def _dpd_get_delay(self, zone, weight):
+        """Announced delivery time for a shipment, as (min, max) working days.
+
+        The tariff grid line covering the shipment overrides the carrier
+        values; 0 means unknown.
+        """
+        self.ensure_one()
+        line = self.env["delivery.dpd.tariff"]
+        if self.dpd_pricing_method == "grid":
+            line = self._dpd_grid_line(zone, weight)
+        return (
+            line.delay_min or self.dpd_delay_min,
+            line.delay_max or self.dpd_delay_max,
+        )
+
+    def _dpd_with_delay(self, res, zone, weight):
+        """Add the delivery time to a successful quote.
+
+        ``delay_min`` / ``delay_max`` (working days, 0 = unknown) let a caller
+        compare carriers on cost and speed. The readable sentence rides
+        ``warning_message``, which the shipping wizard displays and the sale
+        order stores as ``delivery_message``; an existing warning is kept.
+        """
+        if not res.get("success"):
+            return res
+        delay_min, delay_max = self._dpd_get_delay(zone, weight)
+        res.update(delay_min=delay_min, delay_max=delay_max)
+        if not res.get("warning_message"):
+            res["warning_message"] = self._dpd_delay_message(delay_min, delay_max)
+        return res
+
+    @api.model
+    def _dpd_delay_message(self, delay_min, delay_max):
+        """Human-readable delivery time, False when unknown."""
+        if delay_min and delay_max and delay_min != delay_max:
+            return self.env._(
+                "Delivery in %(min)s to %(max)s working days.",
+                min=delay_min,
+                max=delay_max,
+            )
+        days = delay_max or delay_min
+        if days == 1:
+            return self.env._("Delivery in 1 working day.")
+        if days:
+            return self.env._("Delivery in %s working days.", days)
+        return False
 
     @api.model
     def _dpd_get_zone(self, country):
