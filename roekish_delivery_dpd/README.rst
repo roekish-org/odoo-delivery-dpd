@@ -61,8 +61,9 @@ Requirements
 * Python ``roulier`` for DPD label generation.
 * A DPD France e-Station account (login, password), your customer number and
   agency code, set on the carrier.
-* For Pickup relay search: the key of the DPD Pickup web service, provided
-  with a DPD Relais contract. The search is called with ``requests`` and
+* For Pickup relay search: the key of the DPD Pickup web service. DPD does
+  not issue one per contract: use the key shipped with DPD France's official
+  e-commerce modules, or ask your DPD agency. The search is called with ``requests`` and
   ``lxml``, shipped with Odoo.
 
 Rating and relay search work with no external library. ``roulier`` is

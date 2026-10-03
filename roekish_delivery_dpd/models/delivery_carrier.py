@@ -9,7 +9,7 @@ import requests
 from lxml import etree
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 from .demo_label import (
     demo_tracking_number,
@@ -116,8 +116,10 @@ class DeliveryCarrier(models.Model):
     dpd_pudo_key = fields.Char(
         string="Pickup search key",
         groups="roekish_delivery_dpd.group_dpd_manager",
-        help="Key of the DPD France Pickup (MyPudo) relay search web service, "
-        "provided with your DPD Relais contract. Readable only by DPD "
+        help="Key of the DPD France Pickup (MyPudo) relay search web service. "
+        "DPD does not issue one per contract: use the key shipped with DPD "
+        "France's official e-commerce modules, or ask your DPD agency. "
+        "Required to list real Pickup relays. Readable only by DPD "
         "administrators.",
     )
     dpd_pudo_carrier = fields.Char(
@@ -185,6 +187,23 @@ class DeliveryCarrier(models.Model):
         "after hand-over. Applies to every destination unless a tariff grid "
         "line overrides it. Leave 0 when unknown.",
     )
+
+    @api.constrains("dpd_customer_id", "dpd_agency_id")
+    def _check_dpd_contract_numbers(self):
+        # e-Station reads both as integers and rejects anything else with an
+        # opaque "Input string was not in a correct format" SOAP fault.
+        for carrier in self:
+            for name in ("dpd_customer_id", "dpd_agency_id"):
+                value = carrier[name]
+                if value and not value.strip().isdigit():
+                    raise ValidationError(
+                        self.env._(
+                            "The DPD %(field)s must contain digits only, as "
+                            "printed on your contract (got '%(value)s').",
+                            field=carrier._fields[name].string,
+                            value=value,
+                        )
+                    )
 
     # ------------------------------------------------------------------
     # Rating
@@ -430,6 +449,26 @@ class DeliveryCarrier(models.Model):
                 body=self.env._("DPD label %s", tracking or ""),
                 attachments=[(filename, base64.b64decode(data))],
             )
+        # e-Station also returns the shipment summary (EPRINTATTACHMENT).
+        base = picking.name.replace("/", "_")
+        attachments = [
+            (
+                "%s_summary_%s.%s"
+                % (
+                    base,
+                    index,
+                    (annex.get("type") or "pdf").lower().replace("pdf_a6", "pdf"),
+                ),
+                base64.b64decode(annex["data"]),
+            )
+            for index, annex in enumerate(result.get("annexes") or [], 1)
+            if annex.get("data")
+        ]
+        if attachments:
+            picking.message_post(
+                body=self.env._("DPD shipment summary"),
+                attachments=attachments,
+            )
         return ",".join(tracking_numbers)
 
     def _dpd_price_for_picking(self, picking):
@@ -459,8 +498,8 @@ class DeliveryCarrier(models.Model):
             "labelFormat": self.dpd_label_format,
             "shippingDate": fields.Date.context_today(picking),
             "customerCountry": DPD_CUSTOMER_COUNTRY,
-            "customerId": self.dpd_customer_id or "",
-            "agencyId": self.dpd_agency_id or "",
+            "customerId": (self.dpd_customer_id or "").strip(),
+            "agencyId": (self.dpd_agency_id or "").strip(),
             "notifications": (
                 "Predict"
                 if self.dpd_product == "DPD_Predict"
@@ -635,14 +674,22 @@ class DeliveryCarrier(models.Model):
         """Return a list of Pickup relays near ``zipcode``.
 
         Each item is a dict: code, name, street, zip, city, distance.
-        When a Pickup key is set, the live DPD web service is queried;
-        otherwise demonstrative relays are returned so the flow stays
-        testable without an account.
+        With demo labels on, demonstrative relays are returned so a demo
+        never calls DPD. Otherwise the live web service is queried, which
+        needs the Pickup key: fake relays would be refused on a real label.
         """
         self.ensure_one()
-        if self.sudo().dpd_pudo_key:
-            return self._dpd_call_pickup_ws(zipcode, city, country_code, weight)
-        return self._dpd_demo_pickup_points(zipcode, city)
+        if self.dpd_demo_label:
+            return self._dpd_demo_pickup_points(zipcode, city)
+        if not self.sudo().dpd_pudo_key:
+            raise UserError(
+                self.env._(
+                    "Fill the Pickup search key on carrier '%s' to list DPD "
+                    "Pickup relays.",
+                    self.name,
+                )
+            )
+        return self._dpd_call_pickup_ws(zipcode, city, country_code, weight)
 
     def _dpd_call_pickup_ws(self, zipcode, city, country_code, weight):
         self.ensure_one()

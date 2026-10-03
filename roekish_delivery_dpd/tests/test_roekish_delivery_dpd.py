@@ -4,7 +4,7 @@
 import base64
 from unittest.mock import patch
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 
 CARRIER_MODULE = "odoo.addons.roekish_delivery_dpd.models.delivery_carrier"
@@ -266,11 +266,20 @@ class TestDeliveryDpd(TransactionCase):
         self.assertTrue(relay_order.dpd_is_pickup)
 
     def test_demo_pickup_points(self):
-        # No Pickup key -> demonstrative relays, so the flow stays testable.
-        points = self.carrier._dpd_search_pickup_points("75001", "Paris", "FR", 1.0)
+        # Demo labels on -> demonstrative relays, DPD is never called.
+        self.carrier.dpd_demo_label = True
+        with patch(CARRIER_MODULE + ".requests.get") as get:
+            points = self.carrier._dpd_search_pickup_points("75001", "Paris", "FR", 1.0)
+        get.assert_not_called()
         self.assertEqual(len(points), 3)
         self.assertEqual(points[0]["zip"], "75001")
         self.assertTrue(all(p.get("code") for p in points))
+
+    def test_pickup_search_without_key_fails_closed(self):
+        # Outside demo mode, fake relays would be refused on a real label.
+        with self.assertRaises(UserError) as ctx:
+            self.carrier._dpd_search_pickup_points("75001", "Paris", "FR", 1.0)
+        self.assertIn("Pickup search key", str(ctx.exception))
 
     def test_pickup_wizard_from_sale(self):
         order = self._create_order(
@@ -282,6 +291,7 @@ class TestDeliveryDpd(TransactionCase):
             .create({"zip": "69001"})
         )
         self.assertEqual(wizard.carrier_id, self.relay_carrier)
+        self.relay_carrier.dpd_demo_label = True
         wizard.action_search()
         self.assertTrue(wizard.line_ids)
         wizard.line_ids[0].action_select()
@@ -434,6 +444,53 @@ class TestDeliveryDpd(TransactionCase):
         with self.assertRaises(UserError) as ctx:
             self.relay_carrier.dpd_send_shipping(picking)
         self.assertIn("Pickup relay", str(ctx.exception))
+
+    def test_send_shipping_attaches_summary(self):
+        picking = self._create_delivery(self.carrier)
+        label = base64.b64encode(b"%PDF-label").decode()
+        fake_response = {
+            "parcels": [
+                {
+                    "id": 1,
+                    "tracking": {"number": "250123456789012"},
+                    "label": {"data": label, "type": "PDF", "name": "label 1"},
+                }
+            ],
+            "annexes": [{"data": label, "type": "PDF", "name": "Summary"}],
+        }
+        with patch(CARRIER_MODULE + ".roulier") as roulier_mock:
+            roulier_mock.get.return_value = fake_response
+            self.carrier.dpd_send_shipping(picking)
+        attachments = self.env["ir.attachment"].search(
+            [("res_model", "=", "stock.picking"), ("res_id", "=", picking.id)]
+        )
+        self.assertEqual(len(attachments), 2)
+        self.assertTrue(any("_summary_" in a.name for a in attachments))
+
+    def test_contract_numbers_must_be_digits(self):
+        with self.assertRaises(ValidationError):
+            self.carrier.dpd_customer_id = "client 123456"
+        with self.assertRaises(ValidationError):
+            self.carrier.dpd_agency_id = "DPD-077"
+        self.carrier.dpd_customer_id = " 123456 "
+
+    def test_payload_passes_roulier_validation(self):
+        # Run roulier's own encoder (schema validation + XML rendering, no
+        # network) so a payload key it does not know cannot slip through.
+        try:
+            from roulier.carriers.dpd_fr_soap.carrier_action import DpdGetLabel
+            from roulier.carriers.dpd_fr_soap.encoder import DpdEncoder
+        except ImportError:
+            self.skipTest("roulier is not installed")
+        self.carrier.sudo().write({"dpd_login": "user", "dpd_password": "pw"})
+        picking = self._create_delivery(self.carrier)
+        payload = self.carrier._dpd_build_payload(picking)
+        config = DpdGetLabel("dpd_fr_soap", "get_label")
+        body = DpdEncoder(config).encode(payload)["body"]
+        self.assertIn("<car:customer_number>123456</car:customer_number>", body)
+        self.assertIn(
+            "<car:customer_centernumber>077</car:customer_centernumber>", body
+        )
 
     def test_send_shipping_without_roulier_fails_closed(self):
         picking = self._create_delivery(self.carrier)

@@ -62,8 +62,9 @@ comparison sites (2026, taxes included) and are indicative only. Your users
    (3 digits), both printed on your DPD contract.
 3. Tick **Test environment** to send label requests to
    `e-station-testenv.cargonet.software` while validating, then untick it.
-4. **Pickup relay search**: paste the **Pickup search key** given with your
-   DPD Relais contract (the carrier code stays `EXA` for DPD France), then
+4. **Pickup relay search**: paste the **Pickup search key** (DPD does not
+   issue one per contract: use the key shipped with DPD France's official
+   e-commerce modules, or ask your agency; the carrier code stays `EXA`), then
    click **Test connection**: it queries the Pickup web service on your
    company address and reports success or the exact MyPudo error code.
 5. Set the **DPD product** (CLASSIC, Predict or Relais), the **recipient
@@ -147,11 +148,12 @@ For DPD Relais carriers, a **Choose Pickup relay** button appears on the
 **sale order** and the **delivery order**. It opens a wizard that searches
 nearby relays and lets the user select one.
 
-- With a Pickup key set → live MyPudo call
+- With *Demo labels* on → three clearly-labelled demo relays, DPD is never
+  called.
+- Otherwise → live MyPudo call
   (`GET mypudo.pickup-services.com/mypudo/mypudo.asmx/GetPudoList`, XML
-  answer, `<ERROR code>` node surfaced as an error).
-- Without a key → three clearly-labelled demo relays, so the flow is testable
-  offline.
+  answer, `<ERROR code>` node surfaced as an error). Without a Pickup key the
+  search fails with a clear message instead of returning fake relays.
 
 A relay chosen on the sale order **propagates to the delivery order** on
 confirmation, and is sent to DPD as `pickupLocationId` on the label.

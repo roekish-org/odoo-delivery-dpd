@@ -372,9 +372,11 @@ msgstr "Intercontinental (reste du monde)"
 #. module: roekish_delivery_dpd
 #: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_pudo_key
 msgid ""
-"Key of the DPD France Pickup (MyPudo) relay search web service, provided "
-"with your DPD Relais contract. Readable only by DPD administrators."
-msgstr "Clé du web service de recherche de relais Pickup (MyPudo) de DPD France, fournie avec votre contrat DPD Relais. Lisible uniquement par les administrateurs DPD."
+"Key of the DPD France Pickup (MyPudo) relay search web service. DPD does "
+"not issue one per contract: use the key shipped with DPD France's official "
+"e-commerce modules, or ask your DPD agency. Required to list real Pickup "
+"relays. Readable only by DPD administrators."
+msgstr "Clé du web service de recherche de relais Pickup (MyPudo) de DPD France. DPD n'en délivre pas avec le contrat : utilisez la clé livrée avec les modules e-commerce officiels de DPD France, ou demandez-la à votre agence DPD. Nécessaire pour lister les vrais relais Pickup. Lisible uniquement par les administrateurs DPD."
 
 #. module: roekish_delivery_dpd
 #: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_label_format
@@ -829,3 +831,21 @@ msgstr "Étiquette de démo %s : aucun envoi créé chez DPD."
 #: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
 msgid "Pickup relay: %s"
 msgstr "Relais Pickup : %s"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "The DPD %(field)s must contain digits only, as printed on your contract (got '%(value)s')."
+msgstr "Le champ DPD « %(field)s » ne doit contenir que des chiffres, tels qu'imprimés sur votre contrat (saisi : « %(value)s »)."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "DPD shipment summary"
+msgstr "Récapitulatif d'expédition DPD"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Fill the Pickup search key on carrier '%s' to list DPD Pickup relays."
+msgstr "Renseignez la clé de recherche Pickup sur le transporteur « %s » pour lister les relais Pickup DPD."

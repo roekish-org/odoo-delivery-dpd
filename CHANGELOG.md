@@ -3,6 +3,28 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce projet suit le versionnage des modules Odoo (`19.0.x.y.z`).
 
+## [19.0.1.3.0] - 2026-10-03
+
+### Corrigé
+
+- **N° client et code agence** : e-Station les lit comme des entiers et
+  rejetait l'envoi avec une erreur SOAP opaque (« Input string was not in a
+  correct format ») quand ils contenaient autre chose que des chiffres. Ils
+  sont désormais contrôlés dès l'enregistrement du transporteur, avec un
+  message clair, et les espaces autour sont retirés à l'envoi.
+- **Relais Pickup** : sans clé de recherche, le module affichait des relais
+  fictifs même en production, refusés ensuite sur l'étiquette. Les relais de
+  démonstration sont réservés au mode « Étiquettes de démonstration » ; hors
+  démo, l'absence de clé est signalée clairement. L'aide de la clé précise
+  que DPD n'en délivre pas avec le contrat.
+
+### Ajouté
+
+- Le récapitulatif d'expédition renvoyé par e-Station (EPRINTATTACHMENT) est
+  joint au bon de livraison avec l'étiquette.
+- Test qui fait passer la charge utile par la validation réelle de roulier
+  (sans appel réseau).
+
 ## [19.0.1.2.0] - 2026-10-03
 
 ### Ajouté
