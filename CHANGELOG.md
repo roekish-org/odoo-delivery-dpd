@@ -3,6 +3,18 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce projet suit le versionnage des modules Odoo (`19.0.x.y.z`).
 
+## [19.0.1.3.1] - 2026-10-03
+
+### Corrigé
+
+- **N° client au format du contrat** : « 238-21260 » (code agence, tiret,
+  n° client) est accepté. e-Station reçoit l'agence (238) et le n° client
+  (21260) séparément ; l'agence complète un champ « Code agence » vide, et
+  une agence contradictoire est refusée.
+- **Clé de recherche Pickup facultative** : sans clé, le test de connexion
+  n'échoue plus et l'identifiant du relais se saisit directement sur le devis
+  ou le bon de livraison (recherche indisponible, message explicite).
+
 ## [19.0.1.3.0] - 2026-10-03
 
 ### Corrigé

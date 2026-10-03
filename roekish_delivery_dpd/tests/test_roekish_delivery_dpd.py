@@ -474,6 +474,18 @@ class TestDeliveryDpd(TransactionCase):
             self.carrier.dpd_agency_id = "DPD-077"
         self.carrier.dpd_customer_id = " 123456 "
 
+    def test_customer_number_with_agency_prefix(self):
+        # "238-21260" as printed on DPD contracts: agency code, customer number.
+        self.carrier.write({"dpd_customer_id": "238-21260", "dpd_agency_id": False})
+        picking = self._create_delivery(self.carrier)
+        service = self.carrier._dpd_build_payload(picking)["service"]
+        self.assertEqual(service["agencyId"], "238")
+        self.assertEqual(service["customerId"], "21260")
+        self.carrier.dpd_agency_id = "238"
+        self.assertEqual(self.carrier._dpd_contract_numbers(), ("238", "21260"))
+        with self.assertRaises(ValidationError):
+            self.carrier.dpd_agency_id = "077"
+
     def test_payload_passes_roulier_validation(self):
         # Run roulier's own encoder (schema validation + XML rendering, no
         # network) so a payload key it does not know cannot slip through.
@@ -579,10 +591,12 @@ class TestDeliveryDpd(TransactionCase):
     def test_test_connection_requires_credentials(self):
         with self.assertRaises(UserError):
             self.carrier.action_dpd_test_connection()
+        # The Pickup key is optional: without it, no relay query is made.
         self.carrier.sudo().write({"dpd_login": "user", "dpd_password": "pw"})
-        with self.assertRaises(UserError) as ctx:
-            self.carrier.action_dpd_test_connection()
-        self.assertIn("Pickup", str(ctx.exception))
+        with patch(CARRIER_MODULE + ".requests.get") as get:
+            action = self.carrier.action_dpd_test_connection()
+        get.assert_not_called()
+        self.assertEqual(action["params"]["type"], "info")
 
     def test_test_connection(self):
         self.carrier.sudo().write(

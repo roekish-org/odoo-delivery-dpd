@@ -166,8 +166,10 @@ msgstr "DPD France"
 
 #. module: roekish_delivery_dpd
 #: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_customer_id
-msgid "DPD France customer number (6 digits) printed on your contract."
-msgstr "Numéro client DPD France (6 chiffres) figurant sur votre contrat."
+msgid ""
+"DPD France customer number printed on your contract, e.g. 21260 or "
+"238-21260 (agency code, dash, customer number)."
+msgstr "Numéro client DPD France imprimé sur votre contrat, par ex. 21260 ou 238-21260 (code agence, tiret, numéro client)."
 
 #. module: roekish_delivery_dpd
 #: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_product
@@ -323,11 +325,6 @@ msgid ""
 "generating labels."
 msgstr "Renseignez le numéro client et le code agence DPD sur le transporteur « %s » avant de générer des étiquettes."
 
-#. module: roekish_delivery_dpd
-#. odoo-python
-#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
-msgid "Fill the Pickup search key before testing the connection."
-msgstr "Renseignez la clé de recherche Pickup avant de tester la connexion."
 
 #. module: roekish_delivery_dpd
 #. odoo-python
@@ -537,6 +534,8 @@ msgstr "Notification du destinataire"
 
 #. module: roekish_delivery_dpd
 #: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_dpd_pickup_line__code
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_order_form_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_picking_form_dpd
 msgid "Relay ID"
 msgstr "ID du relais"
 
@@ -832,11 +831,6 @@ msgstr "Étiquette de démo %s : aucun envoi créé chez DPD."
 msgid "Pickup relay: %s"
 msgstr "Relais Pickup : %s"
 
-#. module: roekish_delivery_dpd
-#. odoo-python
-#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
-msgid "The DPD %(field)s must contain digits only, as printed on your contract (got '%(value)s')."
-msgstr "Le champ DPD « %(field)s » ne doit contenir que des chiffres, tels qu'imprimés sur votre contrat (saisi : « %(value)s »)."
 
 #. module: roekish_delivery_dpd
 #. odoo-python
@@ -844,8 +838,33 @@ msgstr "Le champ DPD « %(field)s » ne doit contenir que des chiffres, tels qu'
 msgid "DPD shipment summary"
 msgstr "Récapitulatif d'expédition DPD"
 
+
 #. module: roekish_delivery_dpd
 #. odoo-python
 #: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
-msgid "Fill the Pickup search key on carrier '%s' to list DPD Pickup relays."
-msgstr "Renseignez la clé de recherche Pickup sur le transporteur « %s » pour lister les relais Pickup DPD."
+msgid "The DPD customer number must look like 21260 or 238-21260, as printed on your contract (got '%s')."
+msgstr "Le numéro client DPD doit être de la forme 21260 ou 238-21260, comme sur votre contrat (saisi : « %s »)."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "The DPD agency code must contain digits only (got '%s')."
+msgstr "Le code agence DPD ne doit contenir que des chiffres (saisi : « %s »)."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "The agency code %(agency)s does not match the one in customer number %(customer)s."
+msgstr "Le code agence %(agency)s ne correspond pas à celui du numéro client %(customer)s."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "No Pickup search key on carrier '%s': relay search is unavailable. Type the relay ID directly in the Pickup relay ID field (find it on dpd.fr, 'Trouver un relais')."
+msgstr "Pas de clé de recherche Pickup sur le transporteur « %s » : la recherche de relais est indisponible. Saisissez directement l'identifiant du relais (trouvez-le sur dpd.fr, « Trouver un relais »)."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "No Pickup search key: relay search is off, type relay IDs by hand. Labels are checked on the first shipment (use the test environment)."
+msgstr "Pas de clé de recherche Pickup : recherche de relais désactivée, saisissez les identifiants de relais à la main. Les étiquettes se vérifient au premier envoi (utilisez l'environnement de test)."

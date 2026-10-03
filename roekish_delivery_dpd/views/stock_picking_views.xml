@@ -18,7 +18,11 @@
                         class="btn-link"
                     />
                     <field name="dpd_pickup_point_name" readonly="1" />
-                    <field name="dpd_pickup_point_code" readonly="1" nolabel="1" />
+                    <field
+                        name="dpd_pickup_point_code"
+                        nolabel="1"
+                        placeholder="Relay ID"
+                    />
                 </div>
             </xpath>
         </field>

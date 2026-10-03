@@ -35,6 +35,9 @@ PICKUP_URL = "https://mypudo.pickup-services.com/mypudo/mypudo.asmx/GetPudoList"
 PICKUP_TIMEOUT = 30
 # ISO 3166-1 numeric code of France, expected by e-Station as customer country.
 DPD_CUSTOMER_COUNTRY = "250"
+# Customer number as printed on DPD contracts: "21260" or "238-21260"
+# (agency code, dash, customer number).
+CUSTOMER_RE = re.compile(r"^(?:(\d+)-)?(\d+)$")
 # DPD Predict notifies the recipient by SMS: a mobile number is required.
 MOBILE_RE = re.compile(r"^(?:\+336|\+337|00336|00337|06|07)\d{8}$")
 
@@ -95,7 +98,8 @@ class DeliveryCarrier(models.Model):
     )
     dpd_customer_id = fields.Char(
         string="Customer number",
-        help="DPD France customer number (6 digits) printed on your contract.",
+        help="DPD France customer number printed on your contract, e.g. 21260 "
+        "or 238-21260 (agency code, dash, customer number).",
     )
     dpd_agency_id = fields.Char(
         string="Agency code",
@@ -190,20 +194,50 @@ class DeliveryCarrier(models.Model):
 
     @api.constrains("dpd_customer_id", "dpd_agency_id")
     def _check_dpd_contract_numbers(self):
-        # e-Station reads both as integers and rejects anything else with an
-        # opaque "Input string was not in a correct format" SOAP fault.
+        # e-Station reads the agency code and the customer number as two
+        # integers and rejects anything else with an opaque "Input string
+        # was not in a correct format" SOAP fault.
         for carrier in self:
-            for name in ("dpd_customer_id", "dpd_agency_id"):
-                value = carrier[name]
-                if value and not value.strip().isdigit():
-                    raise ValidationError(
-                        self.env._(
-                            "The DPD %(field)s must contain digits only, as "
-                            "printed on your contract (got '%(value)s').",
-                            field=carrier._fields[name].string,
-                            value=value,
-                        )
+            customer = (carrier.dpd_customer_id or "").strip()
+            agency = (carrier.dpd_agency_id or "").strip()
+            match = CUSTOMER_RE.match(customer)
+            if customer and not match:
+                raise ValidationError(
+                    self.env._(
+                        "The DPD customer number must look like 21260 or "
+                        "238-21260, as printed on your contract (got "
+                        "'%s').",
+                        customer,
                     )
+                )
+            if agency and not agency.isdigit():
+                raise ValidationError(
+                    self.env._(
+                        "The DPD agency code must contain digits only (got " "'%s').",
+                        agency,
+                    )
+                )
+            if match and match.group(1) and agency and match.group(1) != agency:
+                raise ValidationError(
+                    self.env._(
+                        "The agency code %(agency)s does not match the one in "
+                        "customer number %(customer)s.",
+                        agency=agency,
+                        customer=customer,
+                    )
+                )
+
+    def _dpd_contract_numbers(self):
+        """Return (agency code, customer number) as sent to e-Station.
+
+        "238-21260" carries the agency code: it fills an empty agency field.
+        """
+        self.ensure_one()
+        agency = (self.dpd_agency_id or "").strip()
+        match = CUSTOMER_RE.match((self.dpd_customer_id or "").strip())
+        if not match:
+            return agency, ""
+        return agency or match.group(1) or "", match.group(2)
 
     # ------------------------------------------------------------------
     # Rating
@@ -493,13 +527,14 @@ class DeliveryCarrier(models.Model):
         creds = self.sudo()
         company = self.company_id or self.env.company
         weight = picking.shipping_weight or picking.weight or 0.0
+        agency_id, customer_id = self._dpd_contract_numbers()
         service = {
             "product": self.dpd_product,
             "labelFormat": self.dpd_label_format,
             "shippingDate": fields.Date.context_today(picking),
             "customerCountry": DPD_CUSTOMER_COUNTRY,
-            "customerId": (self.dpd_customer_id or "").strip(),
-            "agencyId": (self.dpd_agency_id or "").strip(),
+            "customerId": customer_id,
+            "agencyId": agency_id,
             "notifications": (
                 "Predict"
                 if self.dpd_product == "DPD_Predict"
@@ -537,9 +572,7 @@ class DeliveryCarrier(models.Model):
                     picking.name,
                 )
             )
-        if not self.dpd_demo_label and not (
-            self.dpd_customer_id and self.dpd_agency_id
-        ):
+        if not self.dpd_demo_label and not all(self._dpd_contract_numbers()):
             raise UserError(
                 self.env._(
                     "Fill the DPD customer number and agency code on carrier "
@@ -628,8 +661,8 @@ class DeliveryCarrier(models.Model):
     def action_dpd_test_connection(self):
         """Ping DPD with the configured credentials.
 
-        Checks that the e-Station endpoint answers and that the Pickup key
-        is accepted, using the company address as a non-destructive query.
+        With a Pickup key, checks that it is accepted, using the company
+        address as a non-destructive relay query. The key is optional.
         Label credentials themselves can only be validated by generating a
         label (use the test environment for that).
         """
@@ -643,9 +676,20 @@ class DeliveryCarrier(models.Model):
                 )
             )
         if not creds.dpd_pudo_key:
-            raise UserError(
-                self.env._("Fill the Pickup search key before testing the connection.")
-            )
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": self.env._("DPD"),
+                    "message": self.env._(
+                        "No Pickup search key: relay search is off, type relay "
+                        "IDs by hand. Labels are checked on the first "
+                        "shipment (use the test environment)."
+                    ),
+                    "type": "info",
+                    "sticky": False,
+                },
+            }
         company_partner = (self.company_id or self.env.company).partner_id
         points = self._dpd_call_pickup_ws(
             company_partner.zip or "75001",
@@ -684,8 +728,9 @@ class DeliveryCarrier(models.Model):
         if not self.sudo().dpd_pudo_key:
             raise UserError(
                 self.env._(
-                    "Fill the Pickup search key on carrier '%s' to list DPD "
-                    "Pickup relays.",
+                    "No Pickup search key on carrier '%s': relay search is "
+                    "unavailable. Type the relay ID directly in the Pickup "
+                    "relay ID field (find it on dpd.fr, 'Trouver un relais').",
                     self.name,
                 )
             )
