@@ -409,6 +409,32 @@ class TestDeliveryDpd(TransactionCase):
         self.assertEqual(len(attachment), 1)
         self.assertTrue(attachment.name.endswith(".pdf"))
 
+    def test_demo_label_without_account(self):
+        # No contract, no roulier: the flow still yields a label.
+        self.carrier.write(
+            {"dpd_demo_label": True, "dpd_customer_id": False, "dpd_agency_id": False}
+        )
+        picking = self._create_delivery(self.carrier)
+        with patch(CARRIER_MODULE + ".roulier", None):
+            result = self.carrier.dpd_send_shipping(picking)
+        tracking = result[0]["tracking_number"]
+        self.assertEqual(tracking, "DEMO%010d" % picking.id)
+        self.assertEqual(result[0]["exact_price"], 14.10)
+        attachment = self.env["ir.attachment"].search(
+            [("res_model", "=", "stock.picking"), ("res_id", "=", picking.id)]
+        )
+        self.assertEqual(attachment.mimetype, "application/pdf")
+        self.assertTrue(attachment.raw.startswith(b"%PDF"))
+        picking.carrier_tracking_ref = tracking
+        self.assertFalse(self.carrier.dpd_get_tracking_link(picking))
+
+    def test_demo_label_still_validates_shipment(self):
+        self.relay_carrier.dpd_demo_label = True
+        picking = self._create_delivery(self.relay_carrier)
+        with self.assertRaises(UserError) as ctx:
+            self.relay_carrier.dpd_send_shipping(picking)
+        self.assertIn("Pickup relay", str(ctx.exception))
+
     def test_send_shipping_without_roulier_fails_closed(self):
         picking = self._create_delivery(self.carrier)
         with patch(CARRIER_MODULE + ".roulier", None):

@@ -9,6 +9,14 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page name="dpd" string="DPD" invisible="delivery_type != 'dpd'">
+                    <div
+                        class="alert alert-warning"
+                        role="alert"
+                        invisible="not dpd_demo_label"
+                    >
+                        Demo labels are on: validating a delivery attaches a
+                        specimen label, no shipment is created at DPD.
+                    </div>
                     <group>
                         <group string="e-Station credentials">
                             <field name="dpd_login" />
@@ -16,6 +24,7 @@
                             <field name="dpd_customer_id" />
                             <field name="dpd_agency_id" />
                             <field name="dpd_test_mode" />
+                            <field name="dpd_demo_label" />
                         </group>
                         <group string="Pickup relay search">
                             <field name="dpd_pudo_key" password="True" />

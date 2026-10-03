@@ -572,6 +572,8 @@ msgstr "Renseignez un poids d'expédition sur %s avant de générer une étiquet
 
 #. module: roekish_delivery_dpd
 #: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
 msgid "Shipment"
 msgstr "Expédition"
 
@@ -758,3 +760,72 @@ msgid ""
 msgstr ""
 "Délai de livraison le plus court annoncé pour cette zone, en jours ouvrés "
 "après remise. Laissez 0 pour utiliser le délai du transporteur."
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,field_description:roekish_delivery_dpd.field_delivery_carrier__dpd_demo_label
+msgid "Demo labels"
+msgstr "Étiquettes de démonstration"
+
+#. module: roekish_delivery_dpd
+#: model:ir.model.fields,help:roekish_delivery_dpd.field_delivery_carrier__dpd_demo_label
+msgid "Generate a specimen PDF label with a fake DEMO tracking number instead of calling DPD: no shipment is created and nothing is billed. For demonstrations and training only; untick before shipping real parcels."
+msgstr "Génère une étiquette PDF « spécimen » avec un faux numéro de suivi DEMO au lieu d'appeler DPD : aucun envoi n'est créé et rien n'est facturé. Réservé aux démonstrations et formations ; décochez avant d'expédier de vrais colis."
+
+#. module: roekish_delivery_dpd
+#: model_terms:ir.ui.view,arch_db:roekish_delivery_dpd.view_delivery_carrier_form_dpd
+msgid "Demo labels are on: validating a delivery attaches a specimen label, no shipment is created at DPD."
+msgstr "Étiquettes de démonstration activées : la validation d'une livraison joint une étiquette spécimen, aucun envoi n'est créé chez DPD."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "DEMO LABEL - NOT VALID FOR SHIPPING"
+msgstr "ÉTIQUETTE DE DÉMO - NON VALABLE"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "SPECIMEN"
+msgstr "SPÉCIMEN"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "From"
+msgstr "Expéditeur"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "To"
+msgstr "Destinataire"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Weight: %s kg"
+msgstr "Poids : %s kg"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Reference: %s"
+msgstr "Référence : %s"
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Demo mode: no shipment was created at the carrier."
+msgstr "Mode démo : aucun envoi créé chez le transporteur."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Demo label %s: no shipment was created at DPD."
+msgstr "Étiquette de démo %s : aucun envoi créé chez DPD."
+
+#. module: roekish_delivery_dpd
+#. odoo-python
+#: code:addons/roekish_delivery_dpd/models/delivery_carrier.py:0
+msgid "Pickup relay: %s"
+msgstr "Relais Pickup : %s"

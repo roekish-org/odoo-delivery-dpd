@@ -11,6 +11,13 @@ from lxml import etree
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from .demo_label import (
+    demo_tracking_number,
+    is_demo_tracking,
+    partner_lines,
+    render_demo_label,
+)
+
 _logger = logging.getLogger(__name__)
 
 try:
@@ -98,6 +105,13 @@ class DeliveryCarrier(models.Model):
         string="Test environment",
         help="Send label requests to the e-Station test environment instead "
         "of production.",
+    )
+    dpd_demo_label = fields.Boolean(
+        string="Demo labels",
+        help="Generate a specimen PDF label with a fake DEMO tracking number "
+        "instead of calling DPD: no shipment is created and nothing is "
+        "billed. For demonstrations and training only; untick before "
+        "shipping real parcels.",
     )
     dpd_pudo_key = fields.Char(
         string="Pickup search key",
@@ -319,6 +333,9 @@ class DeliveryCarrier(models.Model):
 
     def _dpd_send_one(self, picking):
         self.ensure_one()
+        if self.dpd_demo_label:
+            self._dpd_check_shipment(picking)
+            return self._dpd_send_demo(picking)
         if roulier is None:
             raise UserError(
                 self.env._(
@@ -343,6 +360,53 @@ class DeliveryCarrier(models.Model):
         return {
             "exact_price": self._dpd_price_for_picking(picking),
             "tracking_number": tracking_number or False,
+        }
+
+    def _dpd_send_demo(self, picking):
+        """Attach a specimen label instead of calling DPD.
+
+        The shipment data is still validated by the caller, only the
+        carrier call is skipped.
+        """
+        self.ensure_one()
+        tracking = demo_tracking_number(picking)
+        company = self.company_id or self.env.company
+        weight = picking.shipping_weight or picking.weight or 0.0
+        details = [
+            self.env._("Weight: %s kg", round(weight, 3)),
+            self.env._(
+                "Reference: %s",
+                picking.sale_id.name or picking.origin or picking.name,
+            ),
+        ]
+        if self.dpd_product == "DPD_Relais":
+            details.append(
+                self.env._("Pickup relay: %s", picking.dpd_pickup_point_code)
+            )
+        product = dict(
+            self._fields["dpd_product"]._description_selection(self.env)
+        ).get(self.dpd_product, "")
+        pdf = render_demo_label(
+            heading=self.env._("DEMO LABEL - NOT VALID FOR SHIPPING"),
+            watermark=self.env._("SPECIMEN"),
+            carrier="%s - %s" % (self.name, product),
+            sections=[
+                (self.env._("From"), partner_lines(company.partner_id)),
+                (self.env._("To"), partner_lines(picking.partner_id)),
+                (self.env._("Shipment"), details),
+            ],
+            tracking=tracking,
+            footer=self.env._("Demo mode: no shipment was created at the carrier."),
+        )
+        picking.message_post(
+            body=self.env._("Demo label %s: no shipment was created at DPD.", tracking),
+            attachments=[
+                ("%s_%s.pdf" % (picking.name.replace("/", "_"), tracking), pdf)
+            ],
+        )
+        return {
+            "exact_price": self._dpd_price_for_picking(picking),
+            "tracking_number": tracking,
         }
 
     def _dpd_attach_labels(self, picking, result):
@@ -434,7 +498,9 @@ class DeliveryCarrier(models.Model):
                     picking.name,
                 )
             )
-        if not (self.dpd_customer_id and self.dpd_agency_id):
+        if not self.dpd_demo_label and not (
+            self.dpd_customer_id and self.dpd_agency_id
+        ):
             raise UserError(
                 self.env._(
                     "Fill the DPD customer number and agency code on carrier "
@@ -671,6 +737,8 @@ class DeliveryCarrier(models.Model):
     def dpd_get_tracking_link(self, picking):
         self.ensure_one()
         ref = (picking.carrier_tracking_ref or "").split(",")[0].strip()
+        if is_demo_tracking(ref):
+            return False
         return "https://trace.dpd.fr/fr/trace/%s" % ref
 
     def dpd_cancel_shipment(self, pickings):
