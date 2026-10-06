@@ -41,41 +41,17 @@ CUSTOMER_RE = re.compile(r"^(?:(\d+)-)?(\d+)$")
 # DPD Predict notifies the recipient by SMS: a mobile number is required.
 MOBILE_RE = re.compile(r"^(?:\+336|\+337|00336|00337|06|07)\d{8}$")
 
-# ISO alpha-2 country sets used to map a destination to a DPD zone.
+# ISO alpha-2 country sets used to map a destination to a DPD zone, following the
+# DPD France "Zoning Europe" printed on its 2026 contracts (Euro 1 to Euro 5).
 FR_COUNTRY_CODES = {"FR", "MC"}
-# DPD CLASSIC Europe zone 1: the direct road neighbours.
 EU1_COUNTRY_CODES = {"BE", "DE", "LU", "NL"}
-# DPD CLASSIC Europe zone 2: the rest of the European road network.
-EU2_COUNTRY_CODES = {
-    "AT",
-    "BG",
-    "HR",
-    "CY",
-    "CZ",
-    "DK",
-    "EE",
-    "FI",
-    "GR",
-    "HU",
-    "IE",
-    "IT",
-    "LV",
-    "LT",
-    "MT",
-    "PL",
-    "PT",
-    "RO",
-    "SK",
-    "SI",
-    "ES",
-    "SE",
-    "GB",
-    "CH",
-    "NO",
-    "LI",
-    "IS",
-    "AD",
-}
+EU2_COUNTRY_CODES = {"AT", "CH", "CZ", "ES", "GB", "IT", "LI", "PL", "PT"}
+EU3_COUNTRY_CODES = {"AD", "DK", "EE", "HR", "HU", "IE", "LT", "LV", "SE", "SI", "SK"}
+EU4_COUNTRY_CODES = {"BG", "FI", "GR", "NO", "RO"}
+EU5_COUNTRY_CODES = {"BA", "RS"}
+# Grids written before Euro 3-5 existed priced those countries as Euro 2: a zone
+# without any line of its own falls back to these.
+ZONE_FALLBACK = {"EU3": "EU2", "EU4": "EU2", "EU5": "EU2"}
 
 
 class DeliveryCarrier(models.Model):
@@ -174,6 +150,24 @@ class DeliveryCarrier(models.Model):
         "carrier.\n"
         "- Odoo pricing rules: the standard rule-based pricing engine.",
     )
+    dpd_fuel_surcharge = fields.Float(
+        string="Fuel surcharge (%)",
+        help="Percentage added to the tariff grid price (DPD bills it at the foot "
+        "of the invoice). Grid pricing only.",
+    )
+    dpd_parcel_fee = fields.Float(
+        string="Fixed fees per parcel",
+        help="Amount added to every parcel after the fuel surcharge, e.g. the "
+        "security contribution and the responsible logistics contribution of "
+        "your contract. Grid pricing only.",
+    )
+    dpd_volumetric_divisor = fields.Integer(
+        string="Volumetric divisor",
+        help="When set (DPD uses 5000), the billed weight is the greater of the "
+        "real weight and the volumetric weight: volume in cm3 / divisor, from the "
+        "product volumes. Leave 0 when your contract does not apply volumetric "
+        "billing.",
+    )
     dpd_tariff_ids = fields.One2many(
         "delivery.dpd.tariff",
         "carrier_id",
@@ -251,7 +245,7 @@ class DeliveryCarrier(models.Model):
         """
         self.ensure_one()
         zone = self._dpd_get_zone(order.partner_shipping_id.country_id)
-        weight = order._get_estimated_weight()
+        weight = self._dpd_billed_weight(order)
         # Extension point for a live DPD rating endpoint. DPD France exposes
         # none, so this returns None and we fall back to the configured
         # pricing method. Any override MUST fail closed (return None) when
@@ -263,6 +257,8 @@ class DeliveryCarrier(models.Model):
             )
         if price is None:
             price = self._dpd_grid_rate(zone, weight)
+            if price is not None:
+                price = self._dpd_apply_surcharges(price)
         if price is None:
             return {
                 "success": False,
@@ -285,6 +281,25 @@ class DeliveryCarrier(models.Model):
             weight,
         )
 
+    def _dpd_billed_weight(self, order):
+        """Real weight, or the volumetric weight when greater and enabled."""
+        self.ensure_one()
+        weight = order._get_estimated_weight()
+        if self.dpd_volumetric_divisor > 0:
+            volume_m3 = sum(
+                line.product_id.volume * line.product_uom_qty
+                for line in order.order_line
+                if line.product_id and not line.is_delivery
+            )
+            weight = max(weight, volume_m3 * 1_000_000 / self.dpd_volumetric_divisor)
+        return weight
+
+    def _dpd_apply_surcharges(self, price):
+        """Grid price + fuel surcharge (%) + fixed fees per parcel."""
+        self.ensure_one()
+        price = price * (1 + (self.dpd_fuel_surcharge or 0.0) / 100.0)
+        return self.env.company.currency_id.round(price + (self.dpd_parcel_fee or 0.0))
+
     def _dpd_get_live_price(self, order):
         """Hook for a future DPD live-pricing web call.
 
@@ -295,11 +310,19 @@ class DeliveryCarrier(models.Model):
         return None
 
     def _dpd_grid_line(self, zone, weight):
-        """Return the first tariff grid line covering ``zone`` and ``weight``."""
+        """Return the first tariff grid line covering ``zone`` and ``weight``.
+
+        A Euro 3-5 zone with no line at all uses the Euro 2 lines (grids made
+        before those zones existed)."""
         self.ensure_one()
+        Tariff = self.env["delivery.dpd.tariff"]
         if not zone:
-            return self.env["delivery.dpd.tariff"]
-        return self.env["delivery.dpd.tariff"].search(
+            return Tariff
+        if zone in ZONE_FALLBACK and not Tariff.search_count(
+            [("carrier_id", "=", self.id), ("zone", "=", zone)], limit=1
+        ):
+            zone = ZONE_FALLBACK[zone]
+        return Tariff.search(
             [
                 ("carrier_id", "=", self.id),
                 ("zone", "=", zone),
@@ -372,8 +395,14 @@ class DeliveryCarrier(models.Model):
             return "FR"
         if code in EU1_COUNTRY_CODES:
             return "EU1"
-        if code in EU2_COUNTRY_CODES:
-            return "EU2"
+        for zone, codes in (
+            ("EU2", EU2_COUNTRY_CODES),
+            ("EU3", EU3_COUNTRY_CODES),
+            ("EU4", EU4_COUNTRY_CODES),
+            ("EU5", EU5_COUNTRY_CODES),
+        ):
+            if code in codes:
+                return zone
         return "INT"
 
     # ------------------------------------------------------------------

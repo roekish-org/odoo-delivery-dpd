@@ -3,13 +3,15 @@
 
 from odoo import fields, models
 
-# DPD France pricing zones. DPD France publishes no public grid (rates are
-# negotiated per contract), so the split below mirrors the usual DPD CLASSIC
-# Europe zoning and is meant to be adjusted to your own contract.
+# DPD France pricing zones, as in the "Zoning Europe" of DPD France contracts.
+# Rates are negotiated per contract: enter your own grid.
 DPD_ZONES = [
     ("FR", "France (metropolitan, Monaco)"),
-    ("EU1", "Europe zone 1 (Germany, Belgium, Luxembourg, Netherlands)"),
-    ("EU2", "Europe zone 2 (rest of Europe, United Kingdom, Switzerland)"),
+    ("EU1", "Euro 1 (Germany, Belgium, Luxembourg, Netherlands)"),
+    ("EU2", "Euro 2 (Austria, Spain, UK, Italy, Liechtenstein, Poland, Portugal, Czechia, Switzerland)"),
+    ("EU3", "Euro 3 (Andorra, Croatia, Denmark, Estonia, Hungary, Ireland, Latvia, Lithuania, Slovakia, Slovenia, Sweden)"),
+    ("EU4", "Euro 4 (Bulgaria, Finland, Greece, Norway, Romania)"),
+    ("EU5", "Euro 5 (Bosnia, Serbia)"),
     ("INT", "Intercontinental (rest of the world)"),
 ]
 

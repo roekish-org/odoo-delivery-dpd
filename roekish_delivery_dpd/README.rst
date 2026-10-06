@@ -33,9 +33,10 @@ DPD France does not expose a live rating API, so prices come from data you
 control:
 
 * **Tariff grid** *(default)*: weight brackets per zone, edited directly on
-  the carrier. Zones: metropolitan France (with Monaco), Europe zone 1
-  (Germany, Belgium, Luxembourg, Netherlands), Europe zone 2 (rest of Europe,
-  United Kingdom, Switzerland) and Intercontinental.
+  the carrier. Zones follow the DPD France contract zoning: metropolitan
+  France (with Monaco), Euro 1 to Euro 5, Intercontinental. A Euro 3-5 zone
+  with no line of its own uses the Euro 2 lines. Optional fuel surcharge (%),
+  fixed fees per parcel and volumetric weight (volume / divisor, e.g. 5000).
 * **Odoo pricing rules**: the standard ``base_on_rule`` engine.
 
 Every quote also reports the announced **delivery time** in working days

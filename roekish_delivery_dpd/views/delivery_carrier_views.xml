@@ -48,6 +48,9 @@
                     </group>
                     <group string="Pricing">
                         <field name="dpd_pricing_method" />
+                        <field name="dpd_fuel_surcharge" invisible="dpd_pricing_method != 'grid'" />
+                        <field name="dpd_parcel_fee" invisible="dpd_pricing_method != 'grid'" />
+                        <field name="dpd_volumetric_divisor" />
                         <field name="dpd_delay_min" />
                         <field name="dpd_delay_max" />
                     </group>

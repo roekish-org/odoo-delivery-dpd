@@ -37,8 +37,9 @@ Une **seule dépendance** de module ; `roulier` est importé à la demande et
 ## Transporteurs et zones
 
 Grilles indicatives 2026 fournies en démo, **éditables** par vos utilisateurs :
-France, Europe zone 1 (Allemagne, Belgique, Luxembourg, Pays-Bas), Europe
-zone 2 (reste de l'Europe, Royaume-Uni, Suisse), Intercontinental. Trois
+France, puis Euro 1 à Euro 5 selon le zonage des contrats DPD France, et
+Intercontinental. Surcharge gasoil (%), frais fixes par colis et poids
+volumétrique (facultatif) se règlent sur le transporteur. Trois
 transporteurs prêts à l'emploi :
 
 `Predict` &nbsp; `Relais` &nbsp; `CLASSIC Europe`

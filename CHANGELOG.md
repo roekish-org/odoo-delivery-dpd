@@ -3,6 +3,24 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce projet suit le versionnage des modules Odoo (`19.0.x.y.z`).
 
+## [19.0.1.4.0] - 2026-10-06
+
+### Ajouté
+
+- **Zonage Europe des contrats DPD France** : Euro 1 à Euro 5 (Euro 3 :
+  Andorre, Croatie, Danemark, Estonie, Hongrie, Irlande, Lettonie, Lituanie,
+  Slovaquie, Slovénie, Suède ; Euro 4 : Bulgarie, Finlande, Grèce, Norvège,
+  Roumanie ; Euro 5 : Bosnie, Serbie). Une grille sans ligne Euro 3 à 5 garde
+  ses prix Euro 2 pour ces pays.
+- **Surcharge gasoil (%)** et **frais fixes par colis** (participation sûreté,
+  contribution logistique…) ajoutés au prix de la grille.
+- **Poids volumétrique** facultatif : volume des articles (cm³) / diviseur
+  (5000 chez DPD), retenu s'il dépasse le poids réel.
+
+### Modifié
+
+- Chypre et Malte, absents du zonage DPD France, passent en Intercontinental.
+
 ## [19.0.1.3.1] - 2026-10-03
 
 ### Corrigé

@@ -170,6 +170,12 @@ class TestDeliveryDpd(TransactionCase):
         self.assertEqual(get_zone(self.env.ref("base.be")), "EU1")
         self.assertEqual(get_zone(self.env.ref("base.es")), "EU2")
         self.assertEqual(get_zone(self.env.ref("base.uk")), "EU2")
+        self.assertEqual(get_zone(self.env.ref("base.dk")), "EU3")
+        self.assertEqual(get_zone(self.env.ref("base.ie")), "EU3")
+        self.assertEqual(get_zone(self.env.ref("base.gr")), "EU4")
+        self.assertEqual(get_zone(self.env.ref("base.no")), "EU4")
+        self.assertEqual(get_zone(self.env.ref("base.rs")), "EU5")
+        self.assertEqual(get_zone(self.env.ref("base.mt")), "INT")
         self.assertEqual(get_zone(self.env.ref("base.us")), "INT")
         self.assertEqual(get_zone(self.env["res.country"]), "FR")
 
@@ -184,6 +190,32 @@ class TestDeliveryDpd(TransactionCase):
         res = self.carrier.dpd_rate_shipment(order)
         self.assertTrue(res["success"])
         self.assertEqual(res["price"], 14.10)
+
+    def test_euro_3_5_fall_back_to_euro_2(self):
+        self.env["delivery.dpd.tariff"].create(
+            {"carrier_id": self.carrier.id, "zone": "EU2", "max_weight": 5.0, "price": 20.0}
+        )
+        # no Euro 3 line at all: the Euro 2 line prices Denmark
+        self.assertEqual(self.carrier._dpd_grid_rate("EU3", 2.0), 20.0)
+        # as soon as Euro 3 has its own lines, they are used
+        self.env["delivery.dpd.tariff"].create(
+            {"carrier_id": self.carrier.id, "zone": "EU3", "max_weight": 5.0, "price": 28.0}
+        )
+        self.assertEqual(self.carrier._dpd_grid_rate("EU3", 2.0), 28.0)
+
+    def test_rate_shipment_surcharges(self):
+        # 14.10 grid + 10 % fuel + 0.99 per parcel = 16.50
+        self.carrier.write({"dpd_fuel_surcharge": 10.0, "dpd_parcel_fee": 0.99})
+        res = self.carrier.dpd_rate_shipment(self._create_order(self.carrier))
+        self.assertTrue(res["success"])
+        self.assertAlmostEqual(res["price"], 16.50, places=2)
+
+    def test_rate_shipment_volumetric_weight(self):
+        order = self._create_order(self.carrier, weight=0.5)
+        order.order_line.product_id.volume = 0.024  # 24 000 cm3 / 5000 = 4.8 kg
+        self.assertEqual(self.carrier.dpd_rate_shipment(order)["price"], 6.55)  # off: real 0.5 kg
+        self.carrier.dpd_volumetric_divisor = 5000
+        self.assertEqual(self.carrier.dpd_rate_shipment(order)["price"], 14.10)
 
     def test_rate_shipment_no_bracket(self):
         order = self._create_order(
